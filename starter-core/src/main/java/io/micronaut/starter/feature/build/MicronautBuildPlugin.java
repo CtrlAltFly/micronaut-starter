@@ -200,7 +200,6 @@ public class MicronautBuildPlugin implements BuildPluginFeature, DefaultFeature 
                 (generatorContext.getApplicationType() == ApplicationType.FUNCTION && generatorContext.getFeatures().contains(FEATURE_NAME_GRAALVM)) ||
                         (generatorContext.getApplicationType() == ApplicationType.DEFAULT))) {
             builder.dockerNative(Dockerfile.builder()
-                    .baseImage("amazonlinux:2023")
                     .javaVersion(generatorContext.getJdkVersion().asString())
                     .arg("-XX:MaximumHeapSizePercent=80")
                     .arg("-Dio.netty.allocator.numDirectArenas=0")
