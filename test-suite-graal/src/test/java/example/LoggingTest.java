@@ -4,6 +4,7 @@ import ch.qos.logback.classic.LoggerContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,10 +12,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class LoggingTest {
+class LoggingTest {
 
-    private static final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+    private static final ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
+    private static final LoggerContext context = loggerFactory instanceof LoggerContext ? ((LoggerContext) loggerFactory) : null;
 
     private final PrintStream systemOut = System.out;
 
@@ -33,6 +36,7 @@ public class LoggingTest {
 
     @Test
     void testConsoleAppender() {
+        assertNotNull(context);
         Logger logger = context.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.info("test message");
         assertEquals("test message\n", byteArrayOutputStream.toString());
